@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace CleverWashWebApiTestTask.Model
 {
-	public class ProvidedProducts
+	public class ProvidedProduct
 	{
 		public int Id { get; set; }
 		public int ProductId { get; set; }

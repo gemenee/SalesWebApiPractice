@@ -7,7 +7,7 @@ namespace CleverWashWebApiTestTask.Model
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public IEnumerable<ProvidedProducts> ProvidedProducts { get; set; }
+		public IEnumerable<ProvidedProduct> ProvidedProducts { get; set; } = Enumerable.Empty<ProvidedProduct>();
 		public IEnumerable<Sale> Sales { get; set; }
 
 		public bool IsAvailable(Product product, int quantity)

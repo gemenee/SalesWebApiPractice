@@ -29,8 +29,7 @@ namespace CleverWashWebApiTestTask
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.AddDbContext<AppDbContext>(
-			options => options.UseInMemoryDatabase(databaseName: "Test"));
+			services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
 
 			services.AddSwaggerGen(c =>
 			{
