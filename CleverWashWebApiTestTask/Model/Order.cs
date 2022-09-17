@@ -4,7 +4,8 @@ namespace CleverWashWebApiTestTask.Model
 {
 	public class Order
 	{
-		public int Id { get; set; }
-		public Dictionary<Product, int> Products { get; set; }
+		public Buyer Buyer { get; set; }
+		public SalesPoint SalesPoint { get; set; }
+		public List<(Product product, int quantity)> ProductsQuantity { get; set; }
 	}
 }
