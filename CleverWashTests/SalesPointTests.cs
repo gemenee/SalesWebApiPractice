@@ -27,19 +27,19 @@ namespace CleverWashTests
 		[TestMethod]
 		public void IsAvailable_NoSuchProduct_False()
 		{
-			Assert.IsFalse(_salesPoint.IsAvailable(_unavailableProduct, 1));
+			Assert.IsFalse(_salesPoint.IsAvailable(_unavailableProduct.Id, 1));
 		}
 
 		[TestMethod]
 		public void IsAvailable_InsufficientQuantityOfAvailableProduct_False()
 		{
-			Assert.IsFalse(_salesPoint.IsAvailable(_availableProduct, 2));
+			Assert.IsFalse(_salesPoint.IsAvailable(_availableProduct.Id, 2));
 		}
 
 		[TestMethod]
 		public void IsAvailable_AvailableProduct_True()
 		{
-			Assert.IsTrue(_salesPoint.IsAvailable(_availableProduct, 1));
+			Assert.IsTrue(_salesPoint.IsAvailable(_availableProduct.Id, 1));
 		}
 	}
 }
