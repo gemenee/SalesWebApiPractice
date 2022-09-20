@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using CleverWashWebApiTestTask.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +10,13 @@ namespace CleverWashWebApiTestTask.Persistance
 			DbContextOptions<AppDbContext> options)
 			: base(options)
 		{
+			Database.EnsureCreated();
 		}
 
 		public DbSet<Product> Products { get; set; }
 		public DbSet<Sale> Sales { get; set; }
 		public DbSet<Buyer> Buyers { get; set; }
 		public DbSet<SalesPoint> SalesPoints { get; set; }
-		public DbSet<ProvidedProducts> ProvidedProducts { get; set; }
 		public DbSet<SalesData> SalesData { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +28,12 @@ namespace CleverWashWebApiTestTask.Persistance
 				p.Property(p => p.Price).HasColumnType("money");
 			});
 
+			modelBuilder.Entity<Product>().HasData(
+				new Product() { Id = 1, Name = "Scooter", Price = 100.1 },
+				new Product() { Id = 2, Name = "Bicycle", Price = 200.1 },
+				new Product() { Id = 3, Name = "SkateBoard", Price = 50.1 },
+				new Product() { Id = 4, Name = "Snowboard", Price = 400.1 });
+
 			modelBuilder.Entity<Buyer>(b =>
 			{
 				b.HasKey(b => b.Id);
@@ -35,29 +41,51 @@ namespace CleverWashWebApiTestTask.Persistance
 				b.Ignore(b => b.SalesIds);
 			});
 
+			modelBuilder.Entity<Buyer>().HasData(
+				new Buyer() { Id = 1, Name = "Igor" },
+				new Buyer() { Id = 2, Name = "Egor" }
+				);
+
 			modelBuilder.Entity<Sale>(s =>
 			{
 				s.HasKey(s => s.Id);
 				s.Property(s => s.Date);
 				s.Property(s => s.Time);
-				s.HasOne(s => s.SalesPoint)
-					.WithMany(sp => sp.Sales)
-					.HasForeignKey(s => s.SalesPointId);
 				s.HasOne(s => s.Buyer)
 					.WithMany(b => b.Sales)
-					.HasForeignKey(b => b.BuyerId);
-				s.HasMany(b => b.SalesData)
+					.HasForeignKey(s => s.BuyerId);
+				s.HasMany(s => s.SalesData)
 					.WithOne(sd => sd.Sale);
 				s.Property(s => s.TotalAmount);
 			});
+
+			var providedScooter = new { Id = 1, ProductId = 1, ProductQuantity = 2, SalesPointId = 1 };
+			var providedBicycle = new { Id = 2, ProductId = 2, ProductQuantity = 2, SalesPointId = 2 };
+			var providedSkateboard = new { Id = 3, ProductId = 3, ProductQuantity = 2, SalesPointId = 1 };
+			var providedSnowboard = new { Id = 4, ProductId = 4, ProductQuantity = 2, SalesPointId = 2 };
 
 			modelBuilder.Entity<SalesPoint>(sp =>
 			{
 				sp.HasKey(sp => sp.Id);
 				sp.Property(sp => sp.Name);
-				sp.HasMany(sp => sp.ProvidedProducts)
-					.WithOne(pp => pp.SalesPoint);
+				sp.OwnsMany(sp => sp.ProvidedProducts).HasData(
+					providedScooter,
+					providedSkateboard,
+					providedSnowboard,
+					providedBicycle);
 			});
+
+			modelBuilder.Entity<SalesPoint>().HasData(
+				new SalesPoint()
+				{
+					Id = 1,
+					Name = "Moscow",
+				},
+				new SalesPoint()
+				{
+					Id = 2,
+					Name = "Baksan",
+				});
 		}
 	}
 }
