@@ -9,8 +9,6 @@ namespace CleverWashWebApiTestTask.Model
 		public string Name { get; set; }
 		public virtual ICollection<ProvidedProduct> ProvidedProducts { get; set; } = new List<ProvidedProduct>();
 
-		//public ICollection<Sale> Sales { get; set; }
-
 		public bool IsAvailable(int productId, int quantity)
 		{
 			return ProvidedProducts.Any(pp => pp.ProductId == productId && pp.ProductQuantity >= quantity);

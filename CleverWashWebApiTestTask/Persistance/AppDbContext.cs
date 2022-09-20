@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CleverWashWebApiTestTask.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,10 +28,10 @@ namespace CleverWashWebApiTestTask.Persistance
 			});
 
 			modelBuilder.Entity<Product>().HasData(
-				new Product() { Id = 1, Name = "Scooter", Price = 100.1 },
-				new Product() { Id = 2, Name = "Bicycle", Price = 200.1 },
-				new Product() { Id = 3, Name = "SkateBoard", Price = 50.1 },
-				new Product() { Id = 4, Name = "Snowboard", Price = 400.1 });
+				new Product() { Id = 1, Name = "Product1", Price = 100.1 },
+				new Product() { Id = 2, Name = "Product2", Price = 200.1 },
+				new Product() { Id = 3, Name = "Product3", Price = 50.1 },
+				new Product() { Id = 4, Name = "Product4", Price = 400.1 });
 
 			modelBuilder.Entity<Buyer>(b =>
 			{
@@ -42,8 +41,8 @@ namespace CleverWashWebApiTestTask.Persistance
 			});
 
 			modelBuilder.Entity<Buyer>().HasData(
-				new Buyer() { Id = 1, Name = "Igor" },
-				new Buyer() { Id = 2, Name = "Egor" }
+				new Buyer() { Id = 1, Name = "Buyer1" },
+				new Buyer() { Id = 2, Name = "Buyer2" }
 				);
 
 			modelBuilder.Entity<Sale>(s =>
@@ -59,32 +58,32 @@ namespace CleverWashWebApiTestTask.Persistance
 				s.Property(s => s.TotalAmount);
 			});
 
-			var providedScooter = new { Id = 1, ProductId = 1, ProductQuantity = 2, SalesPointId = 1 };
-			var providedBicycle = new { Id = 2, ProductId = 2, ProductQuantity = 2, SalesPointId = 2 };
-			var providedSkateboard = new { Id = 3, ProductId = 3, ProductQuantity = 2, SalesPointId = 1 };
-			var providedSnowboard = new { Id = 4, ProductId = 4, ProductQuantity = 2, SalesPointId = 2 };
+			var providedProduct1 = new { Id = 1, ProductId = 1, ProductQuantity = 2, SalesPointId = 1 };
+			var providedProduct2 = new { Id = 2, ProductId = 2, ProductQuantity = 2, SalesPointId = 2 };
+			var providedProduct3 = new { Id = 3, ProductId = 3, ProductQuantity = 2, SalesPointId = 1 };
+			var providedProduct4 = new { Id = 4, ProductId = 4, ProductQuantity = 2, SalesPointId = 2 };
 
 			modelBuilder.Entity<SalesPoint>(sp =>
 			{
 				sp.HasKey(sp => sp.Id);
 				sp.Property(sp => sp.Name);
 				sp.OwnsMany(sp => sp.ProvidedProducts).HasData(
-					providedScooter,
-					providedSkateboard,
-					providedSnowboard,
-					providedBicycle);
+					providedProduct1,
+					providedProduct2,
+					providedProduct3,
+					providedProduct4);
 			});
 
 			modelBuilder.Entity<SalesPoint>().HasData(
 				new SalesPoint()
 				{
 					Id = 1,
-					Name = "Moscow",
+					Name = "SalesPoint1",
 				},
 				new SalesPoint()
 				{
 					Id = 2,
-					Name = "Baksan",
+					Name = "SalesPoint2",
 				});
 		}
 	}

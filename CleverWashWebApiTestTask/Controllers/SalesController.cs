@@ -102,8 +102,9 @@ namespace CleverWashWebApiTestTask.Controllers
 		/// Place order to buy products
 		/// </summary>
 		/// <param name="order"></param>
-		/// <returns></returns>
-		[HttpPost("order")]
+		/// <returns>BuyResult</returns>
+		//POST: api/Sales/buy
+		[HttpPost("buy")]
 		public async Task<IActionResult> Buy(Order order)
 		{
 			var result = await _buyService.BuyAsync(order);

@@ -11,7 +11,7 @@ namespace CleverWashTests
 		private readonly Product _unavailableProduct = new() { Id = 1, Name = "B", Price = 2 };
 
 		private List<ProvidedProduct> _providedProducts = new();
-		private SalesPoint _salesPoint = new();
+		private readonly SalesPoint _salesPoint = new();
 
 		[TestInitialize]
 		public void TestInitialize()
@@ -27,19 +27,19 @@ namespace CleverWashTests
 		[TestMethod]
 		public void IsAvailable_NoSuchProduct_False()
 		{
-			Assert.IsFalse(_salesPoint.IsAvailable(_unavailableProduct, 1));
+			Assert.IsFalse(_salesPoint.IsAvailable(_unavailableProduct.Id, 1));
 		}
 
 		[TestMethod]
 		public void IsAvailable_InsufficientQuantityOfAvailableProduct_False()
 		{
-			Assert.IsFalse(_salesPoint.IsAvailable(_availableProduct, 2));
+			Assert.IsFalse(_salesPoint.IsAvailable(_availableProduct.Id, 2));
 		}
 
 		[TestMethod]
 		public void IsAvailable_AvailableProduct_True()
 		{
-			Assert.IsTrue(_salesPoint.IsAvailable(_availableProduct, 1));
+			Assert.IsTrue(_salesPoint.IsAvailable(_availableProduct.Id, 1));
 		}
 	}
 }
