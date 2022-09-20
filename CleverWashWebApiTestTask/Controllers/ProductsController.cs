@@ -19,6 +19,7 @@ namespace CleverWashWebApiTestTask.Controllers
 		public ProductsController(AppDbContext context)
 		{
 			_context = context;
+			_context.Database.EnsureCreated();
 		}
 
 		// GET: api/Products
@@ -43,7 +44,6 @@ namespace CleverWashWebApiTestTask.Controllers
 		}
 
 		// PUT: api/Products/5
-		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutProduct(int id, Product product)
 		{
@@ -74,7 +74,6 @@ namespace CleverWashWebApiTestTask.Controllers
 		}
 
 		// POST: api/Products
-		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 		[HttpPost]
 		public async Task<ActionResult<Product>> PostProduct(Product product)
 		{
