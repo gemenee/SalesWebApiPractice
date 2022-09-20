@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CleverWashWebApiTestTask\CleverWashWebApiTestTask.csproj" />
+    <ProjectReference Include="..\CleverWashWebApiTestTask\SalesWebApiPractice.csproj" />
   </ItemGroup>
 
 </Project>
