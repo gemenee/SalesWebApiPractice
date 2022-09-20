@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,6 +51,9 @@ namespace CleverWashWebApiTestTask.Model
 
 			if (sale.TotalAmount > 0)
 			{
+				var dateTime = DateTime.UtcNow;
+				sale.Date = dateTime.ToShortDateString();
+				sale.Time = dateTime.ToLongTimeString();
 				await _appDbContext.Sales.AddAsync(sale);
 				await _appDbContext.SaveChangesAsync();
 			}
