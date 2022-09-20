@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CleverWashWebApiTestTask.Model
 {
@@ -10,10 +9,12 @@ namespace CleverWashWebApiTestTask.Model
 		public DateTime Date { get; set; }
 		public DateTime Time { get; set; }
 		public int SalesPointId { get; set; }
-		public int BuyerId { get; set; }
-		public IEnumerable<SalesData> SalesData { get; set; }
-		public double TotalAmount { get => SalesData.Sum(sd => sd.ProductIdAmount); }
-		public Buyer Buyer { get; set; }
-		public SalesPoint SalesPoint { get; set; }
+		public int? BuyerId { get; set; }
+		public virtual ICollection<SalesData> SalesData { get; set; }
+
+		public double TotalAmount { get; set; }
+
+		public virtual Buyer Buyer { get; set; }
+		public virtual SalesPoint SalesPoint { get; set; }
 	}
 }

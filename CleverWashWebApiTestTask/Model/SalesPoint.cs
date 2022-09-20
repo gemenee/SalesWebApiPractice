@@ -7,12 +7,13 @@ namespace CleverWashWebApiTestTask.Model
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public IEnumerable<ProvidedProduct> ProvidedProducts { get; set; } = Enumerable.Empty<ProvidedProduct>();
-		public IEnumerable<Sale> Sales { get; set; }
+		public virtual ICollection<ProvidedProduct> ProvidedProducts { get; set; } = new List<ProvidedProduct>();
 
-		public bool IsAvailable(Product product, int quantity)
+		//public ICollection<Sale> Sales { get; set; }
+
+		public bool IsAvailable(int productId, int quantity)
 		{
-			return ProvidedProducts.Any(pp => pp.ProductId == product.Id && pp.ProductQuantity >= quantity);
+			return ProvidedProducts.Any(pp => pp.ProductId == productId && pp.ProductQuantity >= quantity);
 		}
 	}
 }

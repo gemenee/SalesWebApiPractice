@@ -1,18 +1,13 @@
+using System.Text.Json.Serialization;
+using CleverWashWebApiTestTask.Model;
 using CleverWashWebApiTestTask.Persistance;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CleverWashWebApiTestTask
 {
@@ -28,8 +23,20 @@ namespace CleverWashWebApiTestTask
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddControllers();
-			services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase(databaseName: "Test"));
+			services.AddControllers().AddJsonOptions(o =>
+			{
+				o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+				o.JsonSerializerOptions.MaxDepth = 0;
+				o.JsonSerializerOptions.IncludeFields = true;
+			});
+			services.AddDbContext<AppDbContext>(options =>
+			{
+				options.UseInMemoryDatabase(databaseName: "Test");
+				options.UseLazyLoadingProxies();
+				options.EnableSensitiveDataLogging();
+			});
+
+			services.AddScoped<BuyService>();
 
 			services.AddSwaggerGen(c =>
 			{

@@ -5,8 +5,8 @@ namespace CleverWashWebApiTestTask.Model
 		public int Id { get; set; }
 		public int ProductId { get; set; }
 		public int ProductQuantity { get; set; }
-		public int ProductIdAmount { get; set; }
+		public double ProductIdAmount { get; set; }
 
-		public Sale Sale { get; set; }
+		public virtual Sale Sale { get; set; }
 	}
 }

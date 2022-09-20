@@ -13,10 +13,12 @@ namespace CleverWashWebApiTestTask.Controllers
 	public class SalesController : ControllerBase
 	{
 		private readonly AppDbContext _context;
+		private readonly BuyService _buyService;
 
-		public SalesController(AppDbContext context)
+		public SalesController(AppDbContext context, BuyService buyService)
 		{
 			_context = context;
+			_buyService = buyService;
 		}
 
 		// GET: api/Sales
@@ -41,7 +43,6 @@ namespace CleverWashWebApiTestTask.Controllers
 		}
 
 		// PUT: api/Sales/5
-		// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutSale(int id, Sale sale)
 		{
@@ -95,6 +96,16 @@ namespace CleverWashWebApiTestTask.Controllers
 			await _context.SaveChangesAsync();
 
 			return NoContent();
+		}
+
+		[HttpPost("order")]
+		public async Task<IActionResult> Buy(Order order)
+		{
+			var isOk = true;
+			await _buyService.BuyAsync(order);
+
+			if (isOk) return Ok();
+			else return BadRequest();
 		}
 
 		private bool SaleExists(int id)
