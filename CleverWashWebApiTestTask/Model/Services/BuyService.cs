@@ -16,7 +16,7 @@ namespace CleverWashWebApiTestTask.Model
 			_appDbContext = appDbContext;
 		}
 
-		public async Task BuyAsync(Order order)
+		public async Task<BuyResult> BuyAsync(Order order)
 		{
 			var buyer = (await _appDbContext.Buyers.FirstOrDefaultAsync(b => b.Id == order.BuyerId));
 			var salesPoint = (await _appDbContext.SalesPoints.FirstOrDefaultAsync(sp => sp.Id == order.SalesPointId));
@@ -29,10 +29,17 @@ namespace CleverWashWebApiTestTask.Model
 				TotalAmount = 0
 			};
 
+			var buyResult = new BuyResult() { SaleResult = SaleResult.SaleComplete };
+
 			foreach (var position in order.Positions)
 			{
 				var product = await _appDbContext.Products.FirstOrDefaultAsync(p => p.Id == position.productId);
-				if (!salesPoint.IsAvailable(position.productId, position.quantity)) continue;
+				if (!salesPoint.IsAvailable(position.productId, position.quantity))
+				{
+					buyResult.SaleResult = SaleResult.SalePartiallyIncomplete;
+					buyResult.ProductsOutOfStock.Add(product);
+					continue;
+				}
 
 				var providedProduct = salesPoint.ProvidedProducts.FirstOrDefault(pp => pp.ProductId == position.productId);
 				providedProduct.ProductQuantity -= position.quantity;
@@ -46,8 +53,10 @@ namespace CleverWashWebApiTestTask.Model
 				});
 
 				sale.TotalAmount += productAmount;
-				sale.SalesData = salesDataList;
 			}
+
+			sale.SalesData = salesDataList;
+			if (!sale.SalesData.Any()) buyResult.SaleResult = SaleResult.SaleFailed;
 
 			if (sale.TotalAmount > 0)
 			{
@@ -57,6 +66,7 @@ namespace CleverWashWebApiTestTask.Model
 				await _appDbContext.Sales.AddAsync(sale);
 				await _appDbContext.SaveChangesAsync();
 			}
+			return buyResult;
 		}
 	}
 }

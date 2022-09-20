@@ -98,14 +98,20 @@ namespace CleverWashWebApiTestTask.Controllers
 			return NoContent();
 		}
 
+		/// <summary>
+		/// Place order to buy products
+		/// </summary>
+		/// <param name="order"></param>
+		/// <returns></returns>
 		[HttpPost("order")]
 		public async Task<IActionResult> Buy(Order order)
 		{
-			var isOk = true;
-			await _buyService.BuyAsync(order);
+			var result = await _buyService.BuyAsync(order);
 
-			if (isOk) return Ok();
-			else return BadRequest();
+			if (result.SaleResult == SaleResult.SaleComplete)
+				return Ok(result);
+			else
+				return StatusCode(409, result);
 		}
 
 		private bool SaleExists(int id)
